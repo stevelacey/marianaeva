@@ -8,10 +8,14 @@
 <meta property="og:title" content="Mariana · Data science student from Rio de Janeiro">
 <meta property="og:description" content="Student from Rio de Janeiro focused on data science, algorithms and building software that helps people.">
 <meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://stevelacey.github.io/marianaeva/img/icon-512.png">
 <meta name="theme-color" content="#f6f5fb" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0f0e17" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" href="img/favicon-96.png" type="image/png" sizes="96x96">
+<link rel="apple-touch-icon" href="img/icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -60,7 +64,9 @@
   /* Nav */
   nav{position:sticky;top:0;z-index:10;background:var(--nav);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
   nav .wrap{display:flex;justify-content:space-between;align-items:center;height:60px;gap:16px}
-  .logo{font-family:Fraunces,serif;font-weight:600;font-size:21px;text-decoration:none}
+  .logo{font-family:Fraunces,serif;font-weight:600;font-size:21px;text-decoration:none;display:flex;align-items:center;gap:10px}
+  .logo img{width:32px;height:32px;border-radius:50%;background:linear-gradient(160deg,var(--accent),var(--coral))}
+  .avatar{width:120px;height:120px;border-radius:50%;background:linear-gradient(160deg,#6246ea,#e45858);box-shadow:0 0 0 5px var(--bg),0 0 0 7px var(--accent-soft),0 18px 40px -12px rgba(98,70,234,.5);margin-bottom:28px;display:block}
   .logo span{color:var(--accent)}
   .nav-right{display:flex;align-items:center;gap:24px}
   nav ul{display:flex;gap:24px;list-style:none}
@@ -193,7 +199,7 @@
 
 <nav>
   <div class="wrap">
-    <a href="#" class="logo">Mariana</a>
+    <a href="#" class="logo"><img src="img/avatar.webp" alt="" width="32" height="32">Mariana</a>
     <div class="nav-right">
       <ul>
         <li><a href="#about">About</a></li>
@@ -215,6 +221,7 @@
 <header class="hero">
   <div class="wrap">
     <div>
+      <img class="avatar" src="img/avatar.webp" alt="Mariana" width="120" height="120">
       <span class="eyebrow"><i></i>Open to remote internships</span>
       <h1>Hi, I'm Mariana<br>I turn <em>data</em> into answers</h1>
       <p class="lead">I'm a student from Rio de Janeiro focused on data science. I like algorithms, finding patterns in messy data and building software that helps people</p>
