@@ -72,6 +72,20 @@
   .logo{font-family:Fraunces,serif;font-weight:600;font-size:21px;text-decoration:none;display:flex;align-items:center;gap:10px}
   .logo img{width:32px;height:32px;border-radius:50%;background:linear-gradient(160deg,var(--accent),var(--coral))}
   .avatar{width:120px;height:120px;border-radius:50%;background:linear-gradient(160deg,#6246ea,#e0558f);box-shadow:0 0 0 5px var(--bg),0 0 0 7px var(--accent-soft),0 18px 40px -12px rgba(98,70,234,.5);margin-bottom:28px;display:block}
+  .avatar-btn{display:block;border:0;padding:0;background:none;border-radius:50%;margin-bottom:28px;cursor:zoom-in}
+  .avatar-btn .avatar{margin:0;transition:transform .2s}
+  .avatar-btn:hover .avatar{transform:scale(1.04)}
+  .avatar-btn:focus-visible{outline-offset:9px}
+  .photo{border:0;padding:0;background:none;margin:auto;overflow:visible;max-width:none;max-height:none}
+  .photo::backdrop{background:rgba(15,14,23,.75);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+  .photo img{display:block;width:min(560px,86vw,80vh);height:auto;aspect-ratio:1;border-radius:50%;background:linear-gradient(160deg,#6246ea,#e0558f);box-shadow:0 30px 80px -20px rgba(0,0,0,.6);cursor:zoom-out}
+  .photo[open]{animation:photo-in .25s ease-out}
+  .photo[open]::backdrop{animation:fade-in .25s ease-out}
+  .photo-close{position:fixed;top:16px;right:16px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;font-size:24px;line-height:1;cursor:pointer}
+  .photo-close:hover{background:rgba(255,255,255,.3)}
+  .photo .photo-close:focus-visible{outline-color:#fff}
+  @keyframes photo-in{from{opacity:0;transform:scale(.9)}}
+  @keyframes fade-in{from{opacity:0}}
   .logo span{color:var(--accent)}
   .nav-right{display:flex;align-items:center;gap:24px}
   nav ul{display:flex;gap:24px;list-style:none}
@@ -257,7 +271,7 @@
 <header class="hero">
   <div class="wrap">
     <div>
-      <img class="avatar" src="img/avatar.webp" alt="Mariana" width="120" height="120">
+      <button type="button" class="avatar-btn" data-photo aria-label="View Mariana's photo larger"><img class="avatar" src="img/avatar.webp" alt="Mariana" width="120" height="120"></button>
       <span class="eyebrow"><i></i>Open to remote data work</span>
       <h1>Hi, I'm Mariana<br>I turn <em>data</em> into answers</h1>
       <p class="lead">I'm a data science student in Rio de Janeiro, working remotely in fluent English and native Portuguese. I clean up messy data, find the patterns in it and help teams abroad with anything involving Brazil</p>
@@ -553,6 +567,21 @@
 
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); } }), {threshold: .12});
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+<dialog class="photo" data-photo-dialog aria-label="Mariana's photo">
+  <button type="button" class="photo-close" aria-label="Close">×</button>
+  <img alt="Mariana" width="560" height="560">
+</dialog>
+<script>
+  (function () {
+    const d = document.querySelector('[data-photo-dialog]');
+    const img = d.querySelector('img');
+    document.querySelector('[data-photo]').addEventListener('click', () => {
+      if (!img.src) img.src = 'img/avatar-1200.webp';
+      d.showModal();
+    });
+    d.addEventListener('click', () => d.close());
+  })();
 </script>
 </body>
 </html>
