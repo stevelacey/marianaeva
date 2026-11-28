@@ -167,11 +167,11 @@
   .timeline::before{content:"";position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--accent),var(--coral))}
   .item{position:relative;margin-bottom:36px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:24px 26px}
   .item::before{content:"";position:absolute;left:-33px;top:28px;width:16px;height:16px;box-sizing:border-box;border-radius:50%;background:var(--bg);border:3px solid var(--accent)}
-  .item .logos{display:flex;gap:20px;align-items:center;margin-bottom:14px;-webkit-user-select:none;user-select:none}
-  .item .logos img{display:block;height:30px;width:auto;max-width:120px;object-fit:contain}
+  .logos{display:flex;gap:20px;align-items:center;margin-bottom:14px;-webkit-user-select:none;user-select:none}
+  .logos img{display:block;height:30px;width:auto;max-width:120px;object-fit:contain}
   /* Dark mode: white logos, with any white inside them (UFCI/RJ's letters) knocked out */
-  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .item .logos img{filter:url(#logo-white)}}
-  :root[data-theme="dark"] .item .logos img{filter:url(#logo-white)}
+  @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .logos img{filter:url(#logo-white)}}
+  :root[data-theme="dark"] .logos img{filter:url(#logo-white)}
   @media (min-width:768px){.item .logos{position:absolute;top:26px;right:26px;margin:0}.item:has(.logos) :is(.when,h3,.where){padding-right:260px}}
   .item .when{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:12.5px;color:var(--accent);letter-spacing:.04em}
   .item h3{font-size:19px;margin:4px 0 2px}
@@ -190,6 +190,13 @@
   .card p{color:var(--muted);font-size:15px}
 
   /* Skills */
+  .courses-title{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:13px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:40px 0 16px}
+  .courses{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .course{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 24px}
+  .course .logos{height:30px;margin-bottom:16px}
+  .course h3{font-size:17px;margin:0 0 2px}
+  .course span{color:var(--muted);font-size:14px}
+  @media (max-width:767px){.courses{grid-template-columns:1fr}}
   .tags{display:flex;flex-wrap:wrap;gap:10px}
   .tag{background:var(--surface);border:1px solid var(--line);padding:9px 16px;border-radius:999px;font-size:14px;font-weight:500}
   .tag::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c,var(--accent));margin-right:9px;vertical-align:1px}
@@ -383,27 +390,6 @@
         <div class="where">Caixa Econômica Federal · Rio de Janeiro</div>
         <p>Reception and customer service at one of Brazil's big public banks, learning how financial transactions and contracts work.</p>
       </div>
-      <div class="item reveal">
-        <div class="logos"><img src="https://wsrv.nl/?url=commons.wikimedia.org/wiki/Special:FilePath/CNA_logo_%282018%29.svg&amp;h=64&amp;output=webp" alt="CNA" height="30" loading="lazy"></div>
-        <div class="when">COURSE</div>
-        <h3>Advanced English</h3>
-        <div class="where">CNA</div>
-        <p>Advanced English course at CNA, one of Brazil's biggest language schools.</p>
-      </div>
-      <div class="item reveal">
-        <div class="logos"><img src="https://wsrv.nl/?url=commons.wikimedia.org/wiki/Special:FilePath/Banco_Bradesco_logo.svg&amp;h=64&amp;output=webp" alt="Bradesco" height="30" loading="lazy"></div>
-        <div class="when">COURSE</div>
-        <h3>HTML</h3>
-        <div class="where">Fundação Bradesco</div>
-        <p>Intermediate HTML course with Fundação Bradesco.</p>
-      </div>
-      <div class="item reveal">
-        <div class="logos"><img src="https://wsrv.nl/?url=commons.wikimedia.org/wiki/Special:FilePath/Banco_Bradesco_logo.svg&amp;h=64&amp;output=webp" alt="Bradesco" height="30" loading="lazy"></div>
-        <div class="when">COURSE</div>
-        <h3>Microsoft Office</h3>
-        <div class="where">Fundação Bradesco</div>
-        <p>Microsoft Office course with Fundação Bradesco, covering Word, Excel and PowerPoint.</p>
-      </div>
     </div>
   </div>
 </section>
@@ -450,6 +436,24 @@
       <span class="tag" style="--c:var(--coral)">Data science</span>
       <span class="tag" style="--c:var(--teal)">English (fluent)</span>
       <span class="tag" style="--c:var(--teal)">Portuguese (native)</span>
+    </div>
+    <h3 class="courses-title">Courses</h3>
+    <div class="courses reveal">
+      <div class="course">
+        <div class="logos"><img src="https://wsrv.nl/?url=commons.wikimedia.org/wiki/Special:FilePath/CNA_logo_%282018%29.svg&amp;h=64&amp;output=webp" alt="CNA" height="30" loading="lazy"></div>
+        <h3>Advanced English</h3>
+        <span>CNA · 3 years</span>
+      </div>
+      <div class="course">
+        <div class="logos"><img src="https://wsrv.nl/?url=upload.wikimedia.org/wikipedia/commons/0/05/SENAI_logo_2024.png&amp;cx=0&amp;cy=0&amp;cw=244&amp;ch=110&amp;trim=10&amp;h=64&amp;output=webp" alt="SENAI" height="30" style="height:26px" loading="lazy"></div>
+        <h3>Industrial Mechanical Technician</h3>
+        <span>SENAI · 2 years</span>
+      </div>
+      <div class="course">
+        <div class="logos"><img src="https://wsrv.nl/?url=commons.wikimedia.org/wiki/Special:FilePath/Banco_Bradesco_logo.svg&amp;h=64&amp;output=webp" alt="Bradesco" height="30" loading="lazy"></div>
+        <h3>Microsoft Office and HTML</h3>
+        <span>Fundação Bradesco · 6 months</span>
+      </div>
     </div>
   </div>
 </section>
