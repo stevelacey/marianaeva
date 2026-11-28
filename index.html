@@ -167,6 +167,21 @@
   .tag::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--c,var(--accent));margin-right:9px;vertical-align:1px}
 
   /* Contact */
+  .refs{max-width:860px;margin:72px auto 0}
+  #references+#contact{padding-top:0}
+  .refs-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;cursor:grab}
+  .refs-track::-webkit-scrollbar{display:none}
+  .refs-track[data-dragging]{cursor:grabbing;user-select:none;-webkit-user-select:none;scroll-snap-type:none;scroll-behavior:auto}
+  .refs-track[data-settling]{scroll-snap-type:none}
+  .ref{scroll-snap-align:center;flex:0 0 100%;display:flex;flex-direction:column;align-items:center;gap:24px;padding:0 16px;text-align:center;margin:0}
+  .ref blockquote{font-family:Fraunces,Georgia,serif;font-size:clamp(20px,2.6vw,26px);line-height:1.5;text-wrap:balance;max-width:720px}
+  .ref figcaption{display:flex;gap:12px;align-items:center;text-align:left;line-height:1.3}
+  .ref .ini{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;background:linear-gradient(160deg,var(--accent),var(--coral))}
+  .ref strong{display:block;font-weight:600}
+  .ref figcaption span span{display:block;font-size:14px;color:var(--muted)}
+  .refs-dots{display:flex;gap:8px;justify-content:center;margin-top:32px;-webkit-user-select:none;user-select:none}
+  .refs-dots button{width:8px;height:8px;border-radius:999px;border:0;padding:0;background:var(--muted);opacity:.35;cursor:pointer;transition:width .3s,background .3s}
+  .refs-dots button[aria-current=true]{width:24px;background:var(--accent);opacity:1}
   .contact{position:relative;background:linear-gradient(135deg,#2b1f7a,#6246ea 55%,#e0558f);color:#fff;border-radius:24px;padding:60px 40px;text-align:center;overflow:hidden}
   .contact::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.18) 1.5px,transparent 1.5px);background-size:22px 22px;mask-image:linear-gradient(transparent,#000);-webkit-mask-image:linear-gradient(transparent,#000)}
   .contact > *{position:relative}
@@ -192,6 +207,7 @@
     nav ul{display:none}
     .hero{padding:56px 0 56px}
     section{padding:56px 0}
+    .refs{margin-top:48px}
     .contact{padding:44px 22px}
     .nb{font-size:12px}
     .cell{grid-template-columns:60px 1fr}
@@ -355,6 +371,34 @@
   </div>
 </section>
 
+<section id="references">
+  <div class="wrap">
+    <div class="label">references</div>
+    <h2>What people say</h2>
+    <div class="refs reveal" data-slider>
+    <div class="refs-track" data-track>
+      <figure class="ref">
+        <blockquote>“Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”</blockquote>
+        <figcaption><span class="ini">L</span><span><strong>Lorem Ipsum</strong><span>Dolor Sit Amet</span></span></figcaption>
+      </figure>
+      <figure class="ref">
+        <blockquote>“Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.”</blockquote>
+        <figcaption><span class="ini">C</span><span><strong>Consectetur Elit</strong><span>Sed Do Eiusmod</span></span></figcaption>
+      </figure>
+      <figure class="ref">
+        <blockquote>“Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.”</blockquote>
+        <figcaption><span class="ini">D</span><span><strong>Duis Aute</strong><span>Irure Dolor</span></span></figcaption>
+      </figure>
+    </div>
+    <div class="refs-dots" data-dots>
+      <button type="button" aria-label="Quote 1" aria-current="true"></button>
+      <button type="button" aria-label="Quote 2"></button>
+      <button type="button" aria-label="Quote 3"></button>
+    </div>
+    </div>
+  </div>
+</section>
+
 <section id="contact" style="border-top:none">
   <div class="wrap">
     <div class="contact reveal">
@@ -407,6 +451,46 @@
         e.preventDefault(); flip();
       }
     });
+  })();
+
+  // References slider: snap scrolling, dots, mouse drag that settles on the nearest quote, autoplay until touched
+  (function () {
+    const slider = document.querySelector('[data-slider]');
+    if (!slider) return;
+    const track = slider.querySelector('[data-track]');
+    const dots = [...slider.querySelectorAll('[data-dots] button')];
+    const go = i => track.scrollTo({ left: i * track.clientWidth });
+    const current = () => Math.round(track.scrollLeft / track.clientWidth);
+    track.addEventListener('scroll', () => dots.forEach((d, i) => d.setAttribute('aria-current', i === current())), { passive: true });
+    dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+    track.addEventListener('dragstart', e => e.preventDefault());
+    track.addEventListener('pointerdown', e => {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      const x = e.clientX, left = track.scrollLeft, drag = new AbortController();
+      track.dataset.dragging = '';
+      track.setPointerCapture(e.pointerId);
+      const move = e => { track.scrollLeft = left - (e.clientX - x); };
+      const drop = () => {
+        drag.abort();
+        const moved = (left - track.scrollLeft) / track.clientWidth;
+        const from = Math.round(left / track.clientWidth);
+        const to = Math.abs(moved) > 0.15 ? from - Math.sign(moved) : from;
+        // Snapping stays off until it has settled, or it would yank it back first
+        track.dataset.settling = '';
+        delete track.dataset.dragging;
+        const settled = () => delete track.dataset.settling;
+        track.addEventListener('scrollend', settled, { once: true });
+        setTimeout(settled, 800);
+        go(Math.max(0, Math.min(dots.length - 1, to)));
+      };
+      track.addEventListener('pointermove', move, { signal: drag.signal });
+      track.addEventListener('pointerup', drop, { signal: drag.signal });
+      track.addEventListener('pointercancel', drop, { signal: drag.signal });
+    });
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const timer = setInterval(() => go((current() + 1) % dots.length), 6000);
+    const stop = () => clearInterval(timer);
+    ['pointerdown', 'wheel', 'touchstart', 'keydown'].forEach(e => slider.addEventListener(e, stop, { once: true, passive: true }));
   })();
 
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); io.unobserve(e.target); } }), {threshold: .12});
